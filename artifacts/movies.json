@@ -30557,18 +30557,19 @@
     "year": 2021,
     "genres": [
       "Hindi",
-      "Biography",
-      "Drama"
+      "Drama",
+      "History"
     ],
     "directors": "Shoojit Sircar",
     "actors": "Vicky Kaushal, Shaun Scott, Stephen Hogan, Amol Parashar, Banita Sandhu",
     "rating": 4.94,
     "rating_count": 950,
-    "overview": "The unflinching biographical portrait of freedom fighter Udham Singh, who spent two decades tracking down Michael O'Dwyer for the Jallianwala Bagh massacre.",
-    "poster_url": "https://image.tmdb.org/t/p/w500/arw2VCBveWOVZr6pxd9XTd1TdQa.jpg",
-    "backdrop_url": "https://image.tmdb.org/t/p/w1280/qdIMhmSlMAYbGpbyqxnJjSRUtk5.jpg",
+    "overview": "Deeply scarred by the 1919 Jallianwala Bagh massacre, revolutionary Sardar Udham Singh spent 21 years across the world before assassinating Michael O'Dwyer in London to avenge the lost lives of his people.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/d4fpJXhUNukd5XnzRO1XfWf7v88.jpg",
+    "backdrop_url": "https://image.tmdb.org/t/p/w1280/oZftUn6yOt61LItXE4zPOz4rca9.jpg",
     "trailer_key": "dK7W1wZ7A8M",
-    "metadata_source": "curated"
+    "metadata_source": "curated",
+    "release_date": "2021-10-16"
   },
   {
     "movie_id": 1809,
@@ -30827,17 +30828,19 @@
     "genres": [
       "Hindi",
       "Fantasy",
-      "Horror"
+      "Horror",
+      "Drama"
     ],
     "directors": "Rahi Anil Barve",
     "actors": "Sohum Shah, Jyoti Malshe, Anita Date-Kelkar, Ronjini Chakraborty",
     "rating": 4.95,
     "rating_count": 960,
-    "overview": "A greedy family in 1920s Maharashtra constructs an unholy shrine to Hastar, a demonic god banished for hoarding all the wealth in the universe.",
-    "poster_url": "https://image.tmdb.org/t/p/w500/uLOmOF5IzWkuuvWyArXP29tF0.jpg",
-    "backdrop_url": "https://image.tmdb.org/t/p/w1280/8t4fM6yWfNl8xZkY9T8e6M4zW9m.jpg",
+    "overview": "India, 1918. On the outskirts of Tumbbad, a cursed village where it always rains, Vinayak cares for a mysterious old woman who holds the secret of an ancestral treasure—a treasure guarded by the demon Hastar.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/vzjZAKozbDplHWcQXbXo0APKxst.jpg",
+    "backdrop_url": "https://image.tmdb.org/t/p/w1280/l0YKBu3LaehIFzBNjseLjx7MbaN.jpg",
     "trailer_key": "sN75MPxgvX8",
-    "metadata_source": "curated"
+    "metadata_source": "curated",
+    "release_date": "2018-10-12"
   },
   {
     "movie_id": 1823,
