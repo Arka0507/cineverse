@@ -21,7 +21,7 @@ class Movie(BaseModel):
     overview: str = ''
     runtime: int | None = None
     trailer_key: str | None = None
-    metadata_source: Literal['tmdb', 'fallback'] = 'fallback'
+    metadata_source: Literal['tmdb', 'fallback', 'curated'] = 'fallback'
 
 class Catalog(BaseModel):
     items: list[Movie]

@@ -10,6 +10,27 @@ from backend.app.storage import Store
 
 logger = logging.getLogger(__name__)
 
+GENRE_ART: dict[str, tuple[str, str]] = {
+    'Action': ('https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=1280&auto=format&fit=crop&q=80'),
+    'Adventure': ('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1280&auto=format&fit=crop&q=80'),
+    'Animation': ('https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1280&auto=format&fit=crop&q=80'),
+    "Children's": ('https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1280&auto=format&fit=crop&q=80'),
+    'Comedy': ('https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=1280&auto=format&fit=crop&q=80'),
+    'Crime': ('https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1280&auto=format&fit=crop&q=80'),
+    'Documentary': ('https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=1280&auto=format&fit=crop&q=80'),
+    'Drama': ('https://images.unsplash.com/photo-1485846234645-a62644f84728?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1280&auto=format&fit=crop&q=80'),
+    'Fantasy': ('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1280&auto=format&fit=crop&q=80'),
+    'Horror': ('https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=1280&auto=format&fit=crop&q=80'),
+    'Musical': ('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1280&auto=format&fit=crop&q=80'),
+    'Mystery': ('https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1280&auto=format&fit=crop&q=80'),
+    'Romance': ('https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=1280&auto=format&fit=crop&q=80'),
+    'Sci-Fi': ('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1280&auto=format&fit=crop&q=80'),
+    'Thriller': ('https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1280&auto=format&fit=crop&q=80'),
+    'War': ('https://images.unsplash.com/photo-1533613220915-609f661a6fe1?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1533613220915-609f661a6fe1?w=1280&auto=format&fit=crop&q=80'),
+    'Western': ('https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=1280&auto=format&fit=crop&q=80'),
+}
+DEFAULT_ART: tuple[str, str] = ('https://images.unsplash.com/photo-1485846234645-a62644f84728?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1280&auto=format&fit=crop&q=80')
+
 class MetadataService:
     def __init__(self, store: Store, api_key: str) -> None:
         self.store, self.key = store, api_key
@@ -31,8 +52,18 @@ class MetadataService:
         return dict(response.json())
 
     async def fetch(self, movie: dict[str, Any]) -> dict[str, Any]:
-        fallback: dict[str, Any] = {'metadata_source': 'fallback', 'overview': f"Explore {movie['title']}, a {', '.join(movie['genres'][:3]).lower()} selection from the MovieLens catalog. Add your rating to personalize your next discovery."}
-        if not self.key: return fallback
+        primary_genre = movie['genres'][0] if movie.get('genres') else 'Drama'
+        gen_poster, gen_backdrop = GENRE_ART.get(primary_genre, DEFAULT_ART)
+        poster = movie.get('poster_url') or gen_poster
+        backdrop = movie.get('backdrop_url') or gen_backdrop
+        fallback: dict[str, Any] = {
+            'metadata_source': 'curated' if movie.get('poster_url') else 'fallback',
+            'overview': movie.get('overview') or f"Explore {movie['title']}, a {', '.join(movie['genres'][:3]).lower()} selection from the Cineverse catalog. Add your rating to personalize your next discovery.",
+            'poster_url': poster,
+            'backdrop_url': backdrop,
+            'trailer_key': movie.get('trailer_key'),
+        }
+        if not self.key or movie.get('poster_url'): return fallback
         async with self.semaphore:
             try:
                 title = re.sub(r', (The|A|An)$', '', movie['title'])
