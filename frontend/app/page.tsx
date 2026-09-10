@@ -86,37 +86,64 @@ export default function Home() {
       setPopular(result.items);
       setHindiMovies(hindiResult.items);
 
-      // Separate Hollywood movies
+      // Separate Hollywood movies and curate true Award Winners (strictly released films, NO upcoming!)
       const hollywoodOnly = result.items.filter(m => !m.genres.includes('Hindi'));
-      setHollywoodMovies(hollywoodOnly);
+      const awardWinningTitles = [
+        'Oppenheimer',
+        'Everything Everywhere All at Once',
+        'Parasite',
+        'The Godfather',
+        'Godfather, The',
+        'The Godfather Part II',
+        'Godfather: Part II, The',
+        "Schindler's List",
+        'Forrest Gump',
+        'The Silence of the Lambs',
+        'Silence of the Lambs, The',
+        'Titanic',
+        'Whiplash',
+        'Slumdog Millionaire',
+        'Inception',
+        'Interstellar',
+        'The Dark Knight',
+        'Dark Knight, The',
+        'The Shawshank Redemption',
+        'Shawshank Redemption, The',
+        'Pulp Fiction',
+        'La La Land',
+        '12 Years a Slave'
+      ];
+      const awardWinners = [
+        ...result.items.filter(m => awardWinningTitles.includes(m.title)),
+        ...hollywoodOnly.filter(m => (m.year || 0) <= 2024 && (m.rating || 0) >= 4.4 && !['War 2', 'Avengers: Doomsday', 'Spider-Man: Beyond the Spider-Verse', 'Superman', 'Avatar: Fire and Ash'].includes(m.title))
+      ];
+      setHollywoodMovies(Array.from(new Map(awardWinners.map(m => [m.movie_id, m])).values()));
 
-      // Extract 2025-2026 upcoming movies
+      // Extract unreleased upcoming blockbusters (War 2 is a released film, so excluded!)
       const upcoming = [
-        ...result.items.filter(m => (m.year || 0) >= 2025),
-        ...hindiResult.items.filter(m => (m.year || 0) >= 2025)
+        ...result.items.filter(m => m.title !== 'War 2' && ((m.year || 0) >= 2026 || ['Avatar: Fire and Ash', 'Superman'].includes(m.title))),
+        ...hindiResult.items.filter(m => m.title !== 'War 2' && ((m.year || 0) >= 2026 || ['Avatar: Fire and Ash', 'Superman'].includes(m.title)))
       ];
       setFutureMovies(Array.from(new Map(upcoming.map(m => [m.movie_id, m])).values()));
 
-      // Put EXACTLY 3 Hollywood Blockbusters + 3 Hindi Blockbusters alternating in the auto-rotating Hero Billboard
-      const hollywoodHeroPool = [
-        ...hollywoodOnly.filter(m => ['Oppenheimer', 'Dune: Part Two', 'Interstellar', 'Superman', 'Spider-Man: Across the Spider-Verse', 'The Dark Knight', 'Inception'].includes(m.title)),
-        ...hollywoodOnly
-      ];
-      const uniqueHollywood = Array.from(new Map(hollywoodHeroPool.map(m => [m.movie_id, m])).values()).slice(0, 3);
+      // Hero Billboard: User requested upcoming Spider-Man and Doomsday in spotlight + alternating Hindi hits
+      const spiderManMovie = result.items.find(m => m.title === 'Spider-Man: Beyond the Spider-Verse') || hollywoodOnly.find(m => m.title.includes('Spider-Man'));
+      const doomsdayMovie = result.items.find(m => m.title === 'Avengers: Doomsday') || hollywoodOnly.find(m => m.title.includes('Avengers'));
+      const oppenheimerMovie = result.items.find(m => m.title === 'Oppenheimer') || hollywoodOnly[0];
 
       const hindiHeroPool = [
-        ...hindiResult.items.filter(m => ['12th Fail', 'Dangal', 'Jawan', 'Stree 2', 'Pathaan', 'Animal', 'Fighter', 'PK', 'Bajrangi Bhaijaan'].includes(m.title)),
+        ...hindiResult.items.filter(m => ['12th Fail', 'Dangal', 'Jawan', 'Andhadhun', 'Drishyam'].includes(m.title)),
         ...hindiResult.items
       ];
       const uniqueHindi = Array.from(new Map(hindiHeroPool.map(m => [m.movie_id, m])).values()).slice(0, 3);
 
       const alternatingHero = [
-        uniqueHollywood[0],
-        uniqueHindi[0],
-        uniqueHollywood[1],
-        uniqueHindi[1],
-        uniqueHollywood[2],
-        uniqueHindi[2],
+        spiderManMovie || hollywoodOnly[0], // 1. Spider-Man: Beyond the Spider-Verse (Upcoming)
+        uniqueHindi[0],                     // 2. 12th Fail (Hindi)
+        doomsdayMovie || hollywoodOnly[1],  // 3. Avengers: Doomsday (Upcoming)
+        uniqueHindi[1],                     // 4. Dangal (Hindi)
+        oppenheimerMovie,                   // 5. Oppenheimer (Hollywood Oscar Winner)
+        uniqueHindi[2],                     // 6. Jawan (Hindi)
       ].filter(Boolean) as Movie[];
 
       setFeatured(alternatingHero);
@@ -300,12 +327,12 @@ export default function Home() {
                     />
                   )}
 
-                  {/* Hollywood Blockbusters & Award Winners Row */}
+                  {/* Award-Winning Masterpieces & Global Legends Row */}
                   {hollywoodMovies.length > 0 && (
                     <MovieRow
                       id="hollywood"
-                      title="Hollywood Blockbusters & Award Winners"
-                      subtitle="Oscar-winning landmarks, Christopher Nolan masterpieces, and Hollywood cultural titans."
+                      title="Award-Winning Masterpieces & Global Legends"
+                      subtitle="Oscar Best Picture winners, Cannes honorees, and timeless cinema icons (strictly released films)."
                       movies={hollywoodMovies.slice(0, 24)}
                       onOpen={open}
                       onRate={(m, r) => void rate(m, r)}

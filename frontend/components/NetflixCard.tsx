@@ -48,7 +48,7 @@ export default function NetflixCard({
         {rank && <span className="rank-badge">{String(rank).padStart(2, '0')}</span>}
         <div className="card-badges">
           <span className="card-top-label">{movie.genres[0] || 'Movie'}</span>
-          {(movie.year || 0) >= 2025 ? (
+          {movie.title !== 'War 2' && ((movie.year || 0) >= 2026 || ['Avatar: Fire and Ash', 'Superman'].includes(movie.title)) ? (
             <span className="card-new-badge upcoming-badge">UPCOMING</span>
           ) : (
             movie.year && movie.year >= 2020 && <span className="card-new-badge">NEW</span>
