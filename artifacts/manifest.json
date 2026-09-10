@@ -1,0 +1,24 @@
+{
+  "version": "20260910T042005Z",
+  "ratings": 100000,
+  "movies": 1682,
+  "users": 943,
+  "factors": 20,
+  "seed": 42,
+  "sklearn_version": "1.8.0",
+  "metrics": {
+    "split": "per-user chronological last 20%",
+    "train_ratings": 79619,
+    "test_ratings": 20381,
+    "svd_rmse": 0.9933658672168247,
+    "svd_mae": 0.7884311630208822,
+    "bias_baseline_rmse": 1.0063158934550722
+  },
+  "sha256": {
+    "movies.json": "65f9d25f3ca35bccac92a65c2d45657da6a1944c94e5a16b388f2d9be685beb3",
+    "movie_indices.json": "e0749a15aa91338676c40f284f68cf7979638096ca67625778d76a529c538045",
+    "tfidf_vectorizer.pkl": "369fa08a6d5a37f6818889f2311689fa512a9143ad85dc7a534e338f5a760514",
+    "svd_model.pkl": "c72819f1d16ca38a1e54719f253182dd5e91fa1c58181ce451da58758471047e",
+    "tfidf_matrix.pkl": "211e6c32c83654509796b9b68bc06607b5b089077a40be9ee49f2998034a3f69"
+  }
+}

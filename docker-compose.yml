@@ -1,0 +1,36 @@
+name: cineverse
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      target: production
+    env_file: .env
+    environment:
+      ENVIRONMENT: production
+      DEMO_PROFILES: "false"
+      ARTIFACTS_DIR: /app/artifacts
+      DATABASE_PATH: /app/runtime/cineverse.db
+      # Nginx is the peer for all requests. Ingress enforces per-client limits.
+      RATE_LIMIT_PER_MINUTE: "6000"
+    volumes:
+      - cineverse_runtime:/app/runtime
+    expose: ["8000"]
+    restart: unless-stopped
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+  frontend:
+    build:
+      context: ./frontend
+      target: production
+    ports: ["3000:8080"]
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+volumes:
+  cineverse_runtime:

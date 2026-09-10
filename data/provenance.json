@@ -1,0 +1,22 @@
+{
+  "dataset": "MovieLens 100K",
+  "official_url": "https://grouplens.org/datasets/movielens/100k/",
+  "download_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+  "retrieval_note": "Official download returned HTTP 502 in build environment. u.data and u.item retrieved from the public includeno/movielens-100k mirror on Hugging Face. No synthetic ratings.",
+  "mirror": "https://huggingface.co/datasets/includeno/movielens-100k/tree/main",
+  "metadata": "movielens_100k.csv supplied by user; 1680 exact normalized title+ID matches enriched",
+  "files": {
+    "u.data": {
+      "bytes": 1979173,
+      "sha256": "06416e597f82b7342361e41163890c81036900f418ad91315590814211dca490"
+    },
+    "u.item": {
+      "bytes": 236344,
+      "sha256": "553841ebc7de3a0fd0d6b62a204ea30c1e651aacfb2814c7a6584ac52f2c5701"
+    },
+    "movielens_100k.csv": {
+      "bytes": 1197582,
+      "sha256": "d319633c3700526f90921b51cc8a8631fdc586aaa710d260467b6e2eb0389dc1"
+    }
+  }
+}

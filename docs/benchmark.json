@@ -1,0 +1,7 @@
+{
+  "calls": 50,
+  "profile": "existing user with live feedback; top_k=20",
+  "p50_ms": 3.666,
+  "p95_ms": 5.364,
+  "scope": "single-process recommendation computation only; excludes API, database, metadata, network; shared build environment"
+}

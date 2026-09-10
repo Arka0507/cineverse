@@ -1,0 +1,10 @@
+[tool.pytest.ini_options]
+testpaths = ["backend/tests"]
+pythonpath = ["."]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+follow_imports = "silent"
+exclude = ["backend/tests"]
