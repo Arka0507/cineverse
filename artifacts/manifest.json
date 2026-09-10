@@ -1,7 +1,7 @@
 {
-  "version": "20260910T062138Z",
+  "version": "20260910T090104Z",
   "ratings": 100000,
-  "movies": 1724,
+  "movies": 2100,
   "users": 943,
   "factors": 20,
   "seed": 42,
@@ -15,10 +15,10 @@
     "bias_baseline_rmse": 1.0063158934550722
   },
   "sha256": {
-    "movies.json": "ae1beaf9766fb3d815a48df497d1c8e2f27be362228177ea891e77b891cb1b7b",
-    "movie_indices.json": "50e73b0c03198fdea1216c8b3f7d36939e59f1c2710c59e7b532a219e34d1747",
-    "svd_model.pkl": "5c23fad7eb2e28809b05eb17582da37194ffa4d17f9fc40d7f13ed162187fd34",
-    "tfidf_matrix.pkl": "5fedc2295da6f104e6c04f90f7e2e4d95bac01257a82e226c1ee95d15d84f7fb",
-    "tfidf_vectorizer.pkl": "1da1d8da9b88f63f0439d6b53071a33319f042a08a087f7e9e6a0ed49592feff"
+    "movies.json": "26ef6f1f09572114bbdea30612a5bd05c1ed2ebd3d78418807d852272d634cee",
+    "movie_indices.json": "e55389da3cc374ab81f4f47d9741b9c692ad82fa672cbb2eb10c4f7752be1e0f",
+    "svd_model.pkl": "813df049bb4620443756194d772c5c2346593da27444d8d3dc3adced7cee37df",
+    "tfidf_matrix.pkl": "c06f3d6357140cbba09c61a2dbe26f3368030b267397878404a7a4bd2ec0bf18",
+    "tfidf_vectorizer.pkl": "bbd1cf16ef17e0796b853a9aca8a19514ad14d9ed09d41e52fc138cc256cb79f"
   }
 }

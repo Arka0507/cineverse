@@ -20,6 +20,7 @@ GENRE_ART: dict[str, tuple[str, str]] = {
     'Documentary': ('https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=1280&auto=format&fit=crop&q=80'),
     'Drama': ('https://images.unsplash.com/photo-1485846234645-a62644f84728?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1280&auto=format&fit=crop&q=80'),
     'Fantasy': ('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1280&auto=format&fit=crop&q=80'),
+    'Hindi': ('https://image.tmdb.org/t/p/w500/jhi3K0rN46SSu9wEU6zWf1Z955.jpg', 'https://image.tmdb.org/t/p/w1280/8t4fM6yWfNl8xZkY9T8e6M4zW9m.jpg'),
     'Horror': ('https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=1280&auto=format&fit=crop&q=80'),
     'Musical': ('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1280&auto=format&fit=crop&q=80'),
     'Mystery': ('https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500&auto=format&fit=crop&q=80', 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1280&auto=format&fit=crop&q=80'),

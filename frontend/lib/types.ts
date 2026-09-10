@@ -3,6 +3,7 @@ export interface Movie {
   rating: number; rating_count: number; score?: number | null; match?: number | null;
   reason?: string | null; poster_url?: string | null; backdrop_url?: string | null;
   overview: string; runtime?: number | null; trailer_key?: string | null;
+  release_date?: string | null;
   directors?: string; actors?: string; metadata_source: 'tmdb' | 'fallback' | 'curated';
 }
 export interface Catalog { items: Movie[]; total: number; page: number; page_size: number }

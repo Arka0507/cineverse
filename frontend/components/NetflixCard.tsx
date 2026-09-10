@@ -48,14 +48,20 @@ export default function NetflixCard({
         {rank && <span className="rank-badge">{String(rank).padStart(2, '0')}</span>}
         <div className="card-badges">
           <span className="card-top-label">{movie.genres[0] || 'Movie'}</span>
-          {movie.year && movie.year >= 2020 && <span className="card-new-badge">NEW</span>}
+          {(movie.year || 0) >= 2025 ? (
+            <span className="card-new-badge upcoming-badge">UPCOMING</span>
+          ) : (
+            movie.year && movie.year >= 2020 && <span className="card-new-badge">NEW</span>
+          )}
         </div>
       </button>
 
       <div className="card-description">
         <h3 title={movie.title}>{movie.title}</h3>
         <div className="card-meta-line">
-          <span className="card-year">{movie.year || 'Classic'}</span>
+          <span className="card-year">
+            {movie.release_date ? movie.release_date : (movie.year || 'Classic')}
+          </span>
           {movie.match != null ? (
             <span className="match">{movie.match}% Match</span>
           ) : (

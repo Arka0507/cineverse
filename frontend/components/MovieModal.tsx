@@ -96,7 +96,13 @@ export default function MovieModal({
             <strong className="match">
               <Star size={14} fill="#f59e0b" color="#f59e0b" /> {movie.rating.toFixed(1)} / 5.0
             </strong>
-            <span className="year-pill">{movie.year || 'Classic'}</span>
+            {movie.release_date ? (
+              <span className="year-pill release-date-pill">
+                Release: {movie.release_date}
+              </span>
+            ) : (
+              <span className="year-pill">{movie.year || 'Classic'}</span>
+            )}
             <span className="quality">4K UHD</span>
             <span className="rating-count-pill">{movie.rating_count.toLocaleString()} Ratings</span>
           </div>

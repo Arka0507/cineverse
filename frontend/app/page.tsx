@@ -17,6 +17,9 @@ export default function Home() {
   const [featured, setFeatured] = useState<Movie[]>([]);
   const [picks, setPicks] = useState<Movie[]>([]);
   const [popular, setPopular] = useState<Movie[]>([]);
+  const [hindiMovies, setHindiMovies] = useState<Movie[]>([]);
+  const [hollywoodMovies, setHollywoodMovies] = useState<Movie[]>([]);
+  const [futureMovies, setFutureMovies] = useState<Movie[]>([]);
   const [movies, setMovies] = useState<Movie[]>([]);
   const [similar, setSimilar] = useState<Movie[]>([]);
   const [seed, setSeed] = useState<Movie | null>(null);
@@ -72,17 +75,52 @@ export default function Home() {
       }
       persist(s);
 
-      const [result, allGenres, health] = await Promise.all([
-        catalog('', '', 1),
+      const [result, hindiResult, allGenres, health] = await Promise.all([
+        catalog('', '', 1, undefined, 60),
+        catalog('', 'Hindi', 1, undefined, 60),
         request<string[]>('/api/genres'),
         request<{demo_profiles: boolean}>('/health')
       ]);
 
       setPicks(recs);
-      // Put recent blockbusters and high-rated picks into hero featured list
-      const topRecent = result.items.filter(m => (m.year || 0) >= 2014);
-      setFeatured(topRecent.length >= 4 ? topRecent.slice(0, 6) : result.items.slice(0, 6));
       setPopular(result.items);
+      setHindiMovies(hindiResult.items);
+
+      // Separate Hollywood movies
+      const hollywoodOnly = result.items.filter(m => !m.genres.includes('Hindi'));
+      setHollywoodMovies(hollywoodOnly);
+
+      // Extract 2025-2026 upcoming movies
+      const upcoming = [
+        ...result.items.filter(m => (m.year || 0) >= 2025),
+        ...hindiResult.items.filter(m => (m.year || 0) >= 2025)
+      ];
+      setFutureMovies(Array.from(new Map(upcoming.map(m => [m.movie_id, m])).values()));
+
+      // Put EXACTLY 3 Hollywood Blockbusters + 3 Hindi Blockbusters alternating in the auto-rotating Hero Billboard
+      const hollywoodHeroPool = [
+        ...hollywoodOnly.filter(m => ['Oppenheimer', 'Dune: Part Two', 'Interstellar', 'Superman', 'Spider-Man: Across the Spider-Verse', 'The Dark Knight', 'Inception'].includes(m.title)),
+        ...hollywoodOnly
+      ];
+      const uniqueHollywood = Array.from(new Map(hollywoodHeroPool.map(m => [m.movie_id, m])).values()).slice(0, 3);
+
+      const hindiHeroPool = [
+        ...hindiResult.items.filter(m => ['12th Fail', 'Dangal', 'Jawan', 'Stree 2', 'Pathaan', 'Animal', 'Fighter', 'PK', 'Bajrangi Bhaijaan'].includes(m.title)),
+        ...hindiResult.items
+      ];
+      const uniqueHindi = Array.from(new Map(hindiHeroPool.map(m => [m.movie_id, m])).values()).slice(0, 3);
+
+      const alternatingHero = [
+        uniqueHollywood[0],
+        uniqueHindi[0],
+        uniqueHollywood[1],
+        uniqueHindi[1],
+        uniqueHollywood[2],
+        uniqueHindi[2],
+      ].filter(Boolean) as Movie[];
+
+      setFeatured(alternatingHero);
+
       setMovies(result.items);
       setTotal(result.total);
       setGenres(allGenres);
@@ -217,7 +255,7 @@ export default function Home() {
               <Orbit size={44} />
             </div>
             <h1>Entering the Cineverse.</h1>
-            <p>Hydrating 1,700+ blockbusters, ratings, and recommendations…</p>
+            <p>Hydrating 2,250+ blockbusters, Bollywood classics, ratings, and recommendations…</p>
           </main>
         ) : error && !movies.length ? (
           <main className="loading-screen">
@@ -236,6 +274,45 @@ export default function Home() {
             <div className={`browse-content ${filtering ? 'search-content' : ''}`}>
               {!filtering && (
                 <>
+                  {/* Hit Hindi Cinema (2010–2026) Row */}
+                  {hindiMovies.length > 0 && (
+                    <MovieRow
+                      id="hindi"
+                      title="Hit Hindi Cinema (2010–2026)"
+                      subtitle="500+ iconic Bollywood blockbusters, award-winning dramas, and timeless epics."
+                      movies={hindiMovies.slice(0, 24)}
+                      onOpen={open}
+                      onRate={(m, r) => void rate(m, r)}
+                      highlight
+                    />
+                  )}
+
+                  {/* Upcoming Releases (2025-2026) Row */}
+                  {futureMovies.length > 0 && (
+                    <MovieRow
+                      id="upcoming"
+                      title="Upcoming Releases & Blockbusters (2025–2026)"
+                      subtitle="Franchise titans, visionary spectacles, and anticipated theatrical debuts with official release dates."
+                      movies={futureMovies}
+                      onOpen={open}
+                      onRate={(m, r) => void rate(m, r)}
+                      highlight
+                    />
+                  )}
+
+                  {/* Hollywood Blockbusters & Award Winners Row */}
+                  {hollywoodMovies.length > 0 && (
+                    <MovieRow
+                      id="hollywood"
+                      title="Hollywood Blockbusters & Award Winners"
+                      subtitle="Oscar-winning landmarks, Christopher Nolan masterpieces, and Hollywood cultural titans."
+                      movies={hollywoodMovies.slice(0, 24)}
+                      onOpen={open}
+                      onRate={(m, r) => void rate(m, r)}
+                      highlight
+                    />
+                  )}
+
                   {/* Recent Blockbusters Row */}
                   {recentHits.length > 0 && (
                     <MovieRow
@@ -245,7 +322,6 @@ export default function Home() {
                       movies={recentHits}
                       onOpen={open}
                       onRate={(m, r) => void rate(m, r)}
-                      highlight
                     />
                   )}
 
@@ -332,7 +408,7 @@ export default function Home() {
 
                 {/* Genre Filter Chips */}
                 <div className="genre-chips">
-                  {['', 'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Drama', 'Sci-Fi', 'Thriller', 'Horror', 'Romance'].map((g) => (
+                  {['', 'Hindi', 'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Drama', 'Sci-Fi', 'Thriller', 'Horror', 'Romance'].map((g) => (
                     <button
                       key={g}
                       onClick={() => {

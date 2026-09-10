@@ -1430,3 +1430,18 @@ footer small {
   .hero h1 { font-size: 34px; }
   .hero-overview { font-size: 14px; }
 }
+
+.upcoming-badge {
+  background: linear-gradient(135deg, #9333ea, #6366f1) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 10px rgba(147, 51, 234, 0.4);
+}
+
+.release-date-pill {
+  background: rgba(168, 85, 247, 0.18) !important;
+  color: #d8b4fe !important;
+  border: 1px solid rgba(168, 85, 247, 0.45) !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
