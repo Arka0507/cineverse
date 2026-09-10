@@ -1,8 +1,18 @@
 import type {Catalog, Movie, Session} from './types';
-const BASE = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+function getBaseUrl(): string {
+  if (typeof window !== 'undefined') {
+    if (window.location.port === '3000' && window.location.hostname === 'localhost') {
+      return process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+    }
+    return '';
+  }
+  return process.env.NEXT_PUBLIC_API_BASE_URL || '';
+}
+
 export class ApiError extends Error { constructor(message: string, public status: number) { super(message); } }
 export async function request<T>(path: string, options: RequestInit = {}, token?: string): Promise<T> {
-  const response = await fetch(`${BASE}${path}`, {...options, signal: options.signal || AbortSignal.timeout(60000), headers:{'Content-Type':'application/json', ...(token ? {Authorization:`Bearer ${token}`} : {}), ...options.headers}});
+  const base = getBaseUrl();
+  const response = await fetch(`${base}${path}`, {...options, signal: options.signal || AbortSignal.timeout(60000), headers:{'Content-Type':'application/json', ...(token ? {Authorization:`Bearer ${token}`} : {}), ...options.headers}});
   if (!response.ok) {
     const data = await response.json().catch(() => ({}));
     throw new ApiError(typeof data.detail === 'string' ? data.detail : `Request failed (${response.status})`, response.status);
